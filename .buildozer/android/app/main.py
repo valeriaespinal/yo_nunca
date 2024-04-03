@@ -237,11 +237,10 @@ class YoNuncaApp(App):
             "Nunca he pensado en cambiar de amigos."
             ]
 
-        self.prompts_mixed = self.prompts_normal + self.prompts_funny
-        self.current_prompt_index = -1
+        layout = BoxLayout(orientation='vertical', padding=20, spacing=10, size_hint=(1, 1))
+        layout.canvas.before.add(Color(1, 1, 1, 1))
+        layout.canvas.before.add(Rectangle(size=layout.size, pos=layout.pos))
 
-        layout = BoxLayout(orientation='vertical', padding=20, spacing=10)
-        
         title = Label(text="Yo nunca", font_size='24sp', size_hint=(1, None), height=50)
         layout.add_widget(title)
 
@@ -261,9 +260,6 @@ class YoNuncaApp(App):
         self.prompt_label = Label(text="", font_size='18sp', halign='center', size_hint=(1, None), height=50)
         layout.add_widget(self.prompt_label)
 
-        continue_button = Button(text="Continuar", on_press=self.show_next_prompt, background_color=(1, 0.75, 0.8, 1))
-        layout.add_widget(continue_button)
-
         return layout
 
     def show_normal_prompt(self, instance):
@@ -279,10 +275,6 @@ class YoNuncaApp(App):
         index = random.randint(0, len(prompts) - 1)
         self.current_prompt_index = index
         self.prompt_label.text = prompts[index]
-
-    def show_next_prompt(self, instance):
-        if self.current_prompt_index != -1:
-            self.show_prompt(self.prompts_mixed)
 
 if __name__ == '__main__':
     YoNuncaApp().run()
