@@ -2,11 +2,27 @@ from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
-from kivy.graphics import Color, Rectangle
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.core.window import Window
 import random
+
+class PromptScreen(Screen):
+    def __init__(self, name, prompts, **kwargs):
+        super().__init__(name=name, **kwargs)
+        self.prompts = prompts
+        self.prompt_label = Label(text="", font_size='18sp', halign='center')
+        self.add_widget(self.prompt_label)
+
+    def show_prompt(self):
+        index = random.randint(0, len(self.prompts) - 1)
+        self.prompt_label.text = self.prompts[index]
 
 class YoNuncaApp(App):
     def build(self):
+        Window.size = (400, 700)  # Tamaño de la ventana
+        Window.fullscreen = False  # Desactivar el modo pantalla completa
+        Window.clearcolor = (1, 1, 1, 1)  # Establecer el color de fondo a blanco
+
         self.prompts_normal = [
             "Yo nunca he robado en una tienda.",
             "Yo nunca he perdido el trabajo por haber salido de fiesta y bebido demasiado la noche anterior.",
@@ -237,47 +253,19 @@ class YoNuncaApp(App):
             "Nunca he querido acostarme con alguien de aquí y/o su pareja.",
             "Nunca he pensado en cambiar de amigos."
             ]
-        self.prompts_mixed = self.prompts_normal + self.prompts_funny
-        self.current_prompt_index = -1
+        prompts_mixed = prompts_normal + prompts_funny
 
-        layout = BoxLayout(orientation='vertical', padding=20, spacing=10, size_hint=(1, 1))
-        layout.canvas.before.add(Color(1, 1, 1, 1))
-        layout.canvas.before.add(Rectangle(size=layout.size, pos=layout.pos))
+        screen_manager = ScreenManager()
 
-        title = Label(text="Yo nunca", font_size='24sp', size_hint=(1, None), height=50)
-        layout.add_widget(title)
+        normal_screen = PromptScreen(name='normal', prompts=prompts_normal)
+        funny_screen = PromptScreen(name='funny', prompts=prompts_funny)
+        mixed_screen = PromptScreen(name='mixed', prompts=prompts_mixed)
 
-        buttons_layout = BoxLayout(spacing=10, size_hint=(1, None), height=100)
+        screen_manager.add_widget(normal_screen)
+        screen_manager.add_widget(funny_screen)
+        screen_manager.add_widget(mixed_screen)
 
-        normal_button = Button(text="Normal", on_press=self.show_normal_prompt, background_color=(1, 0.75, 0.8, 1))
-        buttons_layout.add_widget(normal_button)
-
-        funny_button = Button(text="Chistoso", on_press=self.show_funny_prompt, background_color=(1, 0.75, 0.8, 1))
-        buttons_layout.add_widget(funny_button)
-
-        mixed_button = Button(text="Mixto", on_press=self.show_mixed_prompt, background_color=(1, 0.75, 0.8, 1))
-        buttons_layout.add_widget(mixed_button)
-
-        layout.add_widget(buttons_layout)
-
-        self.prompt_label = Label(text="", font_size='18sp', halign='center', size_hint=(1, None), height=50)
-        layout.add_widget(self.prompt_label)
-
-        return layout
-
-    def show_normal_prompt(self, instance):
-        self.show_prompt(self.prompts_normal)
-
-    def show_funny_prompt(self, instance):
-        self.show_prompt(self.prompts_funny)
-
-    def show_mixed_prompt(self, instance):
-        self.show_prompt(self.prompts_mixed)
-
-    def show_prompt(self, prompts):
-        index = random.randint(0, len(prompts) - 1)
-        self.current_prompt_index = index
-        self.prompt_label.text = prompts[index]
+        return screen_manager
 
 if __name__ == '__main__':
     YoNuncaApp().run()
