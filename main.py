@@ -236,6 +236,8 @@ class YoNuncaApp(App):
             "Nunca he querido acostarme con alguien de aquí y/o su pareja.",
             "Nunca he pensado en cambiar de amigos."
             ]
+        self.prompts_mixed = self.prompts_normal + self.prompts_funny
+        self.current_prompt_index = -1
 
         layout = BoxLayout(orientation='vertical', padding=20, spacing=10, size_hint=(1, 1))
         layout.canvas.before.add(Color(1, 1, 1, 1))
