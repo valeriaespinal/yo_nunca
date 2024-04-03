@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">YoNunca</string>
-    <string name="private_version">e0bfa1545192b3835e4ffe05bf501a7c51e41e4b</string>
+    <string name="private_version">7ba92ec5e49a615b848399ca2228b67b0db01919</string>
     <string name="presplash_color">#000000</string>
     <string name="urlScheme">kivy</string>
 </resources>

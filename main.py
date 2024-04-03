@@ -19,8 +19,7 @@ class PromptScreen(Screen):
 
 class YoNuncaApp(App):
     def build(self):
-        Window.size = (400, 700)  # Tamaño de la ventana
-        Window.fullscreen = False  # Desactivar el modo pantalla completa
+        Window.fullscreen = True  
         Window.clearcolor = (1, 1, 1, 1)  # Establecer el color de fondo a blanco
 
         self.prompts_normal = [
@@ -265,7 +264,17 @@ class YoNuncaApp(App):
         screen_manager.add_widget(funny_screen)
         screen_manager.add_widget(mixed_screen)
 
-        return screen_manager
+        normal_button = Button(text="Normal", on_press=lambda x: screen_manager.current_screen.show_prompt())
+        funny_button = Button(text="Chistoso", on_press=lambda x: screen_manager.current_screen.show_prompt())
+        mixed_button = Button(text="Mixto", on_press=lambda x: screen_manager.current_screen.show_prompt())
+
+        layout = BoxLayout(orientation='vertical')
+        layout.add_widget(normal_button)
+        layout.add_widget(funny_button)
+        layout.add_widget(mixed_button)
+        layout.add_widget(screen_manager)
+
+        return layout
 
 if __name__ == '__main__':
     YoNuncaApp().run()
